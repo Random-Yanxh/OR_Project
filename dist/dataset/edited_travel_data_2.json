@@ -1,0 +1,50 @@
+{
+  "destinations": [
+    "Shanghai",
+    "Xian",
+    "Qingdao",
+    "Chengde"
+  ],
+  "params": {
+    "Shanghai": { "U": 9, "D": 8 }, // Increased difficulty
+    "Xian":     { "U": 8, "D": 7 }, // Increased difficulty
+    "Qingdao":  { "U": 6, "D": 3 },
+    "Chengde":  { "U": 4, "D": 2 }
+  },
+  "outbound_trips": { // (Trip data same as original)
+    "Shanghai": {
+      "SH_G1": { "dep_time": 8,  "arr_time": 12.5, "cost": 550 },
+      "SH_G7": { "dep_time": 14, "arr_time": 18.5, "cost": 560 }
+    },
+    "Xian": {
+      "XA_G651": { "dep_time": 7,  "arr_time": 11.5, "cost": 515 },
+      "XA_G657": { "dep_time": 15, "arr_time": 19.5, "cost": 520 }
+    },
+    "Qingdao": {
+      "QD_G205": { "dep_time": 9,  "arr_time": 13,   "cost": 314 },
+      "QD_G209": { "dep_time": 16, "arr_time": 20,   "cost": 320 }
+    },
+    "Chengde": {
+      "CD_G3681": { "dep_time": 10, "arr_time": 11.5, "cost": 110 },
+      "CD_G3685": { "dep_time": 17, "arr_time": 18.5, "cost": 115 }
+    }
+  },
+  "return_trips": { // (Trip data same as original)
+    "Shanghai": {
+      "SH_G8": { "dep_time": 82, "arr_time": 86.5, "cost": 550 },
+      "SH_G2": { "dep_time": 111,"arr_time": 115.5,"cost": 570 }
+    },
+    "Xian": {
+      "XA_G658": { "dep_time": 83, "arr_time": 87.5, "cost": 515 },
+      "XA_G652": { "dep_time": 105,"arr_time": 109.5,"cost": 525 }
+    },
+    "Qingdao": {
+      "QD_G210": { "dep_time": 88, "arr_time": 92,   "cost": 314 },
+      "QD_G206": { "dep_time": 111,"arr_time": 115,  "cost": 325 }
+    },
+    "Chengde": {
+      "CD_G3682": { "dep_time": 81, "arr_time": 82.5, "cost": 110 },
+      "CD_G3686": { "dep_time": 110,"arr_time": 111.5,"cost": 120 }
+    }
+  }
+}
