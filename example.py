@@ -1,59 +1,61 @@
 import pulp
 from tabulate import tabulate
+import json
 
 # --- 1. Data Definition ---
-# (Using dictionaries for better readability and generalization)
+# （推荐方式）从JSON文件读取数据，便于可视化编辑和维护
+with open("edited_travel_data.json", "r", encoding="utf-8") as f:
+    data = json.load(f)
 
-destinations = ["Shanghai", "Xian", "Qingdao", "Chengde"]
+destinations = data["destinations"]
+params = data["params"]
+outbound_trips = data["outbound_trips"]
+return_trips = data["return_trips"]
 
-# Parameters for each destination
-params = {
-    "Shanghai": {"U": 9, "D": 5},
-    "Xian":     {"U": 8, "D": 4},
-    "Qingdao":  {"U": 6, "D": 3},
-    "Chengde":  {"U": 4, "D": 2},
-}
-
-# Outbound Trip Data (using trip IDs for clarity)
-# Times are in hours from May 1st 00:00
-outbound_trips = {
-    "Shanghai": {
-        "SH_G1": {"dep_time": 8,  "arr_time": 12.5, "cost": 550},
-        "SH_G7": {"dep_time": 14, "arr_time": 18.5, "cost": 560},
-    },
-    "Xian": {
-        "XA_G651": {"dep_time": 7,  "arr_time": 11.5, "cost": 515},
-        "XA_G657": {"dep_time": 15, "arr_time": 19.5, "cost": 520},
-    },
-    "Qingdao": {
-        "QD_G205": {"dep_time": 9,  "arr_time": 13,   "cost": 314},
-        "QD_G209": {"dep_time": 16, "arr_time": 20,   "cost": 320},
-    },
-    "Chengde": {
-        "CD_G3681": {"dep_time": 10, "arr_time": 11.5, "cost": 110},
-        "CD_G3685": {"dep_time": 17, "arr_time": 18.5, "cost": 115},
-    },
-}
-
-# Return Trip Data
-return_trips = {
-    "Shanghai": {
-        "SH_G8": {"dep_time": 82, "arr_time": 86.5, "cost": 550}, # May 4th 10:00
-        "SH_G2": {"dep_time": 111,"arr_time": 115.5,"cost": 570}, # May 5th 15:00
-    },
-    "Xian": {
-        "XA_G658": {"dep_time": 83, "arr_time": 87.5, "cost": 515}, # May 4th 11:00
-        "XA_G652": {"dep_time": 105,"arr_time": 109.5,"cost": 525}, # May 5th 09:00
-    },
-    "Qingdao": {
-        "QD_G210": {"dep_time": 88, "arr_time": 92,   "cost": 314}, # May 4th 16:00
-        "QD_G206": {"dep_time": 111,"arr_time": 115,  "cost": 325}, # May 5th 15:00
-    },
-    "Chengde": {
-        "CD_G3682": {"dep_time": 81, "arr_time": 82.5, "cost": 110}, # May 4th 09:00
-        "CD_G3686": {"dep_time": 110,"arr_time": 111.5,"cost": 120}, # May 5th 14:00
-    },
-}
+# # （原始方式，已被注释，保留以便对比/回退）
+# destinations = ["Shanghai", "Xian", "Qingdao", "Chengde"]
+# params = {
+#     "Shanghai": {"U": 9, "D": 5},
+#     "Xian":     {"U": 8, "D": 4},
+#     "Qingdao":  {"U": 6, "D": 3},
+#     "Chengde":  {"U": 4, "D": 2},
+# }
+# outbound_trips = {
+#     "Shanghai": {
+#         "SH_G1": {"dep_time": 8,  "arr_time": 12.5, "cost": 550},
+#         "SH_G7": {"dep_time": 14, "arr_time": 18.5, "cost": 560},
+#     },
+#     "Xian": {
+#         "XA_G651": {"dep_time": 7,  "arr_time": 11.5, "cost": 515},
+#         "XA_G657": {"dep_time": 15, "arr_time": 19.5, "cost": 520},
+#     },
+#     "Qingdao": {
+#         "QD_G205": {"dep_time": 9,  "arr_time": 13,   "cost": 314},
+#         "QD_G209": {"dep_time": 16, "arr_time": 20,   "cost": 320},
+#     },
+#     "Chengde": {
+#         "CD_G3681": {"dep_time": 10, "arr_time": 11.5, "cost": 110},
+#         "CD_G3685": {"dep_time": 17, "arr_time": 18.5, "cost": 115},
+#     },
+# }
+# return_trips = {
+#     "Shanghai": {
+#         "SH_G8": {"dep_time": 82, "arr_time": 86.5, "cost": 550},
+#         "SH_G2": {"dep_time": 111,"arr_time": 115.5,"cost": 570},
+#     },
+#     "Xian": {
+#         "XA_G658": {"dep_time": 83, "arr_time": 87.5, "cost": 515},
+#         "XA_G652": {"dep_time": 105,"arr_time": 109.5,"cost": 525},
+#     },
+#     "Qingdao": {
+#         "QD_G210": {"dep_time": 88, "arr_time": 92,   "cost": 314},
+#         "QD_G206": {"dep_time": 111,"arr_time": 115,  "cost": 325},
+#     },
+#     "Chengde": {
+#         "CD_G3682": {"dep_time": 81, "arr_time": 82.5, "cost": 110},
+#         "CD_G3686": {"dep_time": 110,"arr_time": 111.5,"cost": 120},
+#     },
+# }
 
 # Other Parameters
 alpha = 1.0      # Difficulty weight
@@ -204,8 +206,29 @@ for sol in optimal_solutions:
     stay_ok = "√" if (stay != "-" and min_stay <= stay <= max_stay) else "×"
     table.append([dest, out_trip, out_cost, ret_trip, ret_cost, total_cost, stay, cost_ok, stay_ok])
 
+import tkinter as tk
+from tkinter import ttk
+
+def show_result_in_window(table_data, headers):
+    win = tk.Tk()
+    win.title("优化结果")
+    # 使用Treeview美观显示表格
+    tree = ttk.Treeview(win, columns=headers, show="headings", height=min(20, len(table_data)+1))
+    for h in headers:
+        tree.heading(h, text=h)
+        tree.column(h, width=110, anchor="center")
+    for row in table_data:
+        tree.insert("", tk.END, values=row)
+    tree.pack(expand=True, fill="both")
+    # 关闭按钮
+    btn = tk.Button(win, text="关闭", command=win.destroy)
+    btn.pack(pady=8)
+    win.mainloop()
+
 if table:
-    print(tabulate(table, headers, tablefmt="grid", stralign="center"))
+    table_str = tabulate(table, headers, tablefmt="grid", stralign="center")
+    print(table_str)  # 保留终端输出
+    show_result_in_window(table, headers)
 else:
     print("未找到可行解。")
 
