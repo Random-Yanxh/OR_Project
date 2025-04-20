@@ -1,0 +1,70 @@
+{
+  "destinations": [
+    "Shanghai",
+    "Nanjing",
+    "Beijing",
+    "Changsha"
+  ],
+  "params": {
+    "Shanghai": {
+      "U": 8.0,
+      "D": 4.5,
+      "min_stay_hours": 36.0,
+      "max_stay_hours": 72.0
+    },
+    "Nanjing": {
+      "U": 7.5,
+      "D": 3.5,
+      "min_stay_hours": 36.0,
+      "max_stay_hours": 72.0
+    },
+    "Beijing": {
+      "U": 9.0,
+      "D": 5.0,
+      "min_stay_hours": 48.0,
+      "max_stay_hours": 96.0
+    },
+    "Changsha": {
+      "U": 7.0,
+      "D": 3.0,
+      "min_stay_hours": 48.0,
+      "max_stay_hours": 84.0
+    }
+  },
+  "outbound_trips": {
+    "Shanghai": {
+      "SH_G1_HZ": { "dep_time": 9.0, "arr_time": 10.5, "cost": 150 },
+      "SH_G7_HZ": { "dep_time": 15.0, "arr_time": 16.5, "cost": 160 }
+    },
+    "Nanjing": {
+      "NJ_G3_HZ": { "dep_time": 8.0, "arr_time": 10.0, "cost": 245 },
+      "NJ_G9_HZ": { "dep_time": 16.0, "arr_time": 18.0, "cost": 250 }
+    },
+    "Beijing": {
+      "BJ_G5_HZ": { "dep_time": 8.0, "arr_time": 13.5, "cost": 580 },
+      "BJ_G11_HZ": { "dep_time": 14.0, "arr_time": 19.5, "cost": 600 }
+    },
+    "Changsha": {
+      "CS_G13_HZ": { "dep_time": 9.0, "arr_time": 13.0, "cost": 420 },
+      "CS_G15_HZ": { "dep_time": 15.0, "arr_time": 19.0, "cost": 430 }
+    }
+  },
+  "return_trips": {
+    "Shanghai": {
+      "SH_G2_HZ": { "dep_time": 75.0, "arr_time": 76.5, "cost": 155 },
+      "SH_G8_HZ": { "dep_time": 80.0, "arr_time": 81.5, "cost": 165 }
+    },
+    "Nanjing": {
+      "NJ_G4_HZ": { "dep_time": 78.0, "arr_time": 80.0, "cost": 248 },
+      "NJ_G10_HZ": { "dep_time": 82.0, "arr_time": 84.0, "cost": 255 }
+    },
+    "Beijing": {
+      "BJ_G6_HZ": { "dep_time": 80.0, "arr_time": 85.5, "cost": 590 },
+      "BJ_G12_HZ": { "dep_time": 100.0, "arr_time": 105.5, "cost": 610 }
+    },
+    "Changsha": {
+      "CS_G14_HZ": { "dep_time": 85.0, "arr_time": 89.0, "cost": 425 },
+      "CS_G16_HZ": { "dep_time": 95.0, "arr_time": 99.0, "cost": 435 }
+    }
+  }
+}

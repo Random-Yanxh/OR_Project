@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>求解思路流程图</title>
+    <style>
+        /* 基本 SVG 元素样式 */
+        .flowchart-svg {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 13px;
+            display: block; /* 避免下方多余空白 */
+            margin: 20px auto; /* 居中显示 */
+            max-width: 750px; /* 限制最大宽度 */
+            height: auto; /* 高度自适应 */
+        }
+
+        /* 矩形节点样式 (流程步骤) */
+        .flowchart-rect {
+            fill: #e1f5fe; /* 淡蓝色背景 */
+            stroke: #0277bd; /* 深蓝色边框 */
+            stroke-width: 1.5;
+        }
+
+        /* 菱形节点样式 (判断) */
+        .flowchart-diamond {
+            fill: #fff9c4; /* 淡黄色背景 */
+            stroke: #f57f17; /* 橙色边框 */
+            stroke-width: 1.5;
+        }
+
+        /* 结束节点样式 */
+        .flowchart-end {
+            fill: #ffebee; /* 淡红色背景 */
+            stroke: #c62828; /* 深红色边框 */
+            stroke-width: 1.5;
+            rx: 10; /* 圆角 */
+        }
+
+        /* 节点内文本样式 */
+        .flowchart-text {
+            text-anchor: middle; /* 水平居中 */
+            dominant-baseline: middle; /* 垂直居中 */
+            fill: #333; /* 深灰色文字 */
+            pointer-events: none; /* 防止文本干扰鼠标事件 */
+            -webkit-user-select: none; /* 禁止选择文本 */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 箭头连线样式 */
+        .flowchart-line {
+            stroke: #616161; /* 深灰色线条 */
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        /* 箭头判断标签样式 ("是"/"否") */
+        .flowchart-label {
+            font-size: 11px;
+            fill: #424242; /* 中灰色文字 */
+            text-anchor: middle;
+            dominant-baseline: central;
+             background-color: white; /* 给个白色背景，避免被线条穿过 */
+             paint-order: stroke;
+             stroke: white;
+             stroke-width: 3px;
+             stroke-linecap: butt;
+             stroke-linejoin: miter;
+        }
+
+         /* 箭头定义 */
+         #arrowhead path {
+             fill: #616161; /* 箭头颜色与线条一致 */
+         }
+    </style>
+</head>
+<body>
+
+<h1>求解思路流程图</h1>
+
+<svg id="flowchart" class="flowchart-svg" width="750" height="650" viewBox="0 0 750 650">
+    <!-- 定义箭头样式 -->
+    <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7"
+        refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z" />
+        </marker>
+    </defs>
+
+    <!-- 节点定义 -->
+    <!-- A: 开始 -->
+    <rect x="275" y="20" width="200" height="50" class="flowchart-rect" id="node-a"/>
+    <text x="375" y="45" class="flowchart-text">A: 开始: 构建 0-1 整数规划模型</text>
+
+    <!-- B: 求解 -->
+    <rect x="275" y="100" width="200" height="60" class="flowchart-rect" id="node-b"/>
+    <text x="375" y="130" class="flowchart-text">B: B&C方法求解当前模型<tspan x="375" dy="1.2em">(使用 CBC 求解器)</tspan></text>
+
+    <!-- C: Optimal? -->
+    <polygon points="375,190 475,235 375,280 275,235" class="flowchart-diamond" id="node-c"/>
+    <text x="375" y="235" class="flowchart-text">C: 求解状态 Optimal?</text>
+
+    <!-- D: 首次? -->
+    <polygon points="375,310 475,355 375,400 275,355" class="flowchart-diamond" id="node-d"/>
+    <text x="375" y="355" class="flowchart-text">D: 首次找到最优解?</text>
+
+    <!-- E: 记录 Z* -->
+    <rect x="525" y="330" width="150" height="50" class="flowchart-rect" id="node-e"/>
+    <text x="600" y="355" class="flowchart-text">E: 记录最优目标值 Z*</text>
+
+    <!-- F: 结束 -->
+    <rect x="50" y="210" width="180" height="50" class="flowchart-end" id="node-f"/>
+    <text x="140" y="235" class="flowchart-text">F: 结束: 无更多最优解<tspan x="140" dy="1.2em">(或无解)</tspan></text>
+
+    <!-- G: 目标值 == Z*? -->
+    <polygon points="375,430 475,475 375,520 275,475" class="flowchart-diamond" id="node-g"/>
+    <text x="375" y="475" class="flowchart-text">G: 当前目标值 == Z*?</text>
+
+    <!-- H: 记录解 S -->
+    <rect x="525" y="450" width="150" height="50" class="flowchart-rect" id="node-h"/>
+    <text x="600" y="475" class="flowchart-text">H: 记录当前最优解 S</text>
+
+    <!-- I: 添加约束 -->
+    <rect x="275" y="550" width="200" height="60" class="flowchart-rect" id="node-i"/>
+    <text x="375" y="580" class="flowchart-text">I: 添加排除解 S 的约束<tspan x="375" dy="1.2em">(Integer Cut)</tspan></text>
+
+    <!-- 连线 -->
+    <!-- A -> B -->
+    <line x1="375" y1="70" x2="375" y2="100" class="flowchart-line" marker-end="url(#arrowhead)"/>
+    <!-- B -> C -->
+    <line x1="375" y1="160" x2="375" y2="190" class="flowchart-line" marker-end="url(#arrowhead)"/>
+    <!-- C -- 否 -->
+    <line x1="275" y1="235" x2="230" y2="235" class="flowchart-line"/>
+    <line x1="230" y1="235" x2="230" y2="235" class="flowchart-line" marker-end="url(#arrowhead)"/> <!-- Endpoint slightly adjusted for clarity -->
+    <text x="250" y="225" class="flowchart-label">否</text>
+    <!-- C -- 是 -->
+    <line x1="375" y1="280" x2="375" y2="310" class="flowchart-line" marker-end="url(#arrowhead)"/>
+    <text x="395" y="295" class="flowchart-label">是</text>
+    <!-- D -- 是 -->
+    <line x1="475" y1="355" x2="525" y2="355" class="flowchart-line" marker-end="url(#arrowhead)"/>
+    <text x="500" y="345" class="flowchart-label">是</text>
+    <!-- E -> G -->
+    <line x1="600" y1="380" x2="600" y2="405" class="flowchart-line"/>
+    <line x1="600" y1="405" x2="400" y2="405" class="flowchart-line"/>
+    <line x1="400" y1="405" x2="400" y2="430" class="flowchart-line" marker-end="url(#arrowhead)"/> <!-- Adjusted entry to G -->
+    <!-- D -- 否 -->
+     <line x1="375" y1="400" x2="375" y2="430" class="flowchart-line" marker-end="url(#arrowhead)"/>
+    <text x="350" y="415" class="flowchart-label">否</text>
+    <!-- G -- 是 -->
+    <line x1="475" y1="475" x2="525" y2="475" class="flowchart-line" marker-end="url(#arrowhead)"/>
+    <text x="500" y="465" class="flowchart-label">是</text>
+    <!-- H -> I -->
+    <line x1="600" y1="500" x2="600" y2="580" class="flowchart-line"/>
+    <line x1="600" y1="580" x2="475" y2="580" class="flowchart-line" marker-end="url(#arrowhead)"/>
+    <!-- I -> B (Loop) -->
+    <line x1="275" y1="580" x2="150" y2="580" class="flowchart-line"/>
+    <line x1="150" y1="580" x2="150" y2="130" class="flowchart-line"/>
+    <line x1="150" y1="130" x2="275" y2="130" class="flowchart-line" marker-end="url(#arrowhead)"/>
+     <!-- G -- 否 -->
+     <line x1="275" y1="475" x2="140" y2="475" class="flowchart-line"/>
+     <line x1="140" y1="475" x2="140" y2="260" class="flowchart-line" marker-end="url(#arrowhead)"/>
+     <text x="210" y="465" class="flowchart-label">否</text>
+
+</svg>
+
+</body>
+</html>
